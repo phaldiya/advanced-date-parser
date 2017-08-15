@@ -1,0 +1,40 @@
+{
+  "name": "advanced-date-parser",
+  "description": "an date parser middleware, to parse date into Javascript Date Objects",
+  "main": "./advanced-date-parser.js",
+  "version": "0.0.1",
+  "authors": [
+    "Pradeep K Haldiya <pradeep.haldiya@gmail.com>"
+  ],
+  "keywords": [
+    "express",
+    "date",
+    "middleware",
+    "body",
+    "query",
+    "pradeep",
+    "haldiya"
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phaldiya/advanced-date-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/phaldiya/advanced-date-parser/issues"
+  },
+  "homepage": "https://github.com/phaldiya/advanced-date-parser#readme",
+  "license": "MIT",
+  "dependencies": {
+    "moment": "^2.18.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
