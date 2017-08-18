@@ -30,7 +30,7 @@ const model = {
 
     for (let key in object) {
       // avoid circular reference infinite loop & skip inherited properties
-      if (object === object[key] || !object.hasOwnProperty(key) || typeof object[key] !== 'object') continue;
+      if (object === object[key] || !Object.prototype.hasOwnProperty.call(object, key) || typeof object[key] !== 'object') continue;
       model.parse(object[key]);
     }
 
