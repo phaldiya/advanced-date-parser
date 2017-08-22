@@ -2,7 +2,7 @@
   "name": "advanced-date-parser",
   "description": "an date parser middleware, to parse date into Javascript Date Objects",
   "main": "./advanced-date-parser.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "authors": [
     "Pradeep K Haldiya <pradeep.haldiya@gmail.com>"
   ],

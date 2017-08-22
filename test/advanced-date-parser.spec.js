@@ -29,7 +29,7 @@ describe('Date Parser', () => {
       query: {
         term: "express",
         metaData: {
-          startDate: "2017-10-01"
+          startDate: "2017-10-01 00:00:00"
         }
       }
     };
@@ -50,7 +50,7 @@ describe('Date Parser', () => {
     let req = {
       query: {
         term: "express",
-        dates: ["2017-10-01", "2017-08-11T00:00:00.000Z"]
+        dates: ["Friday, June 24, 2016 10:42 AM", "2017-08-11T00:00:00.000Z"]
       }
     };
 
@@ -59,7 +59,7 @@ describe('Date Parser', () => {
     expect(req.query).to.deep.equal({
       term: "express",
       dates: [
-        moment("2017-10-01").toDate(),
+        moment("Friday, June 24, 2016 10:42 AM", "LLLL", true).toDate(),
         moment("2017-08-11T00:00:00.000Z").toDate()
       ]
     });
