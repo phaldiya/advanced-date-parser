@@ -48,6 +48,15 @@ app.use(dateParser.dateParser());
 dateParser.parse(<Your_Object>);
 ```
 
+**NOTE**: Just set _**strict**_ mode to _**false**_, if you want to parse all date values
+```javascript
+// Default strict mode is on
+app.use(dateParser.queryDateParser(), false);
+app.use(dateParser.bodyDateParser(), false);
+app.use(dateParser.dateParser(), false);
+dateParser.parse(<Your_Object>, false);
+```
+
 ## Contributing
 * If you planning add some feature please **create issue before**.
 * Don't forget about tests.

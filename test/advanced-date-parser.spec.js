@@ -24,6 +24,27 @@ describe('Date Parser', () => {
     expect(req.query.startDate instanceof Date).to.equal(true);
   });
 
+  it('should parse the object with date params in not strict mode', () => {
+    let req = {
+      query: {
+        term: "express",
+        from: "2017-10-01",
+        to: "2017-10-31"
+      }
+    };
+
+    dateParser.parse(req.query, false);
+
+    expect(req.query).to.deep.equal({
+      term: "express",
+      from: moment("2017-10-01").toDate(),
+      to: moment("2017-10-31").toDate()
+    });
+
+    expect(req.query.from instanceof Date).to.equal(true);
+    expect(req.query.to instanceof Date).to.equal(true);
+  });
+
   it('should parse the deep object with date params', () => {
     let req = {
       query: {

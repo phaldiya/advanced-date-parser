@@ -2,12 +2,13 @@
   "name": "advanced-date-parser",
   "description": "an date parser middleware, to parse date into Javascript Date Objects",
   "main": "./advanced-date-parser.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "authors": [
     "Pradeep K Haldiya <pradeep.haldiya@gmail.com>"
   ],
   "keywords": [
     "express",
+    "moment",
     "date",
     "middleware",
     "body",

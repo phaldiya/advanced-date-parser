@@ -5,29 +5,29 @@ const supportedDateFormates = ["YYYY-MM-DD", "MM/DD/YYYY", "MM-DD-YYYY", "DD/MM/
   moment.ISO_8601, "X", "x", "MMM Do, YYYY", "MMM Do YYYY", "MMMM Do, YYYY", "MMMM Do YYYY", "dddd, MMMM DD, YYYY h:mm a", "ddd, MMMM DD, YYYY h:mm a"];
 
 const model = {
-  dateParser: () => {
+  dateParser: (strict) => {
     return (req, res, next) => {
-      model.parse(req.body);
-      model.parse(req.query);
+      model.parse(req.body, strict);
+      model.parse(req.query, strict);
       next();
     }
   },
 
-  bodyDateParser: () => {
+  bodyDateParser: (strict) => {
     return (req, res, next) => {
-      model.parse(req.body);
+      model.parse(req.body, strict);
       next();
     }
   },
 
-  queryDateParser: () => {
+  queryDateParser: (strict) => {
     return (req, res, next) => {
-      model.parse(req.query);
+      model.parse(req.query, strict);
       next();
     }
   },
 
-  parse: (object) => {
+  parse: (object, strict) => {
     if (typeof object !== 'object' || object === null) return;
 
     for (let key in object) {
@@ -36,14 +36,15 @@ const model = {
       model.parse(object[key]);
     }
 
-    model._findAndReplace(object);
+    model._findAndReplace(object, strict);
   },
 
-  _findAndReplace: (object) => {
+  _findAndReplace: (object, strict) => {
+    strict = strict !== false;
     let dateRegex = new RegExp("date", "ig");
 
     Object.keys(object).forEach((key) => {
-      if (typeof object[key] !== 'boolean' && isNaN(object[key]) && moment(object[key], supportedDateFormates, true).isValid()) {
+      if (typeof object[key] !== 'boolean' && isNaN(object[key]) && (!strict || !isNaN(key) || dateRegex.test(key)) && moment(object[key], supportedDateFormates, true).isValid()) {
         object[key] = moment(object[key], supportedDateFormates, true).toDate();
       } else if (!isNaN(object[key]) && dateRegex.test(key)) {
         let unixDateRegex = new RegExp("^\\d{10}(\\.\\d{0,3})?$");
