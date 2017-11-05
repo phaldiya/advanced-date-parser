@@ -2,6 +2,7 @@ advanced-date-parser
 =====================
 
 > an date parser middleware, to parse date into Javascript Date Objects
+> Also work with typescript
 
 
 ## Getting started ##
@@ -26,6 +27,11 @@ npm install --save advanced-date-parser
 ```javascript
 // create a variable into server.js
 const dateParser = require('advanced-date-parser');
+```
+
+```javascript
+// typescript
+import * as dateParser from "advanced-date-parser";
 ```
 It can be used in many different ways
 * To parse only query params
