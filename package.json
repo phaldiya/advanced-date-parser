@@ -1,9 +1,9 @@
 {
   "name": "advanced-date-parser",
-  "description": "an date parser middleware, to parse date into Javascript Date Objects",
+  "description": "A date parser middleware, to parse date into Javascript Date Objects",
   "main": "./advanced-date-parser.js",
   "types": "./advanced-date-parser.d.ts",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "authors": [
     "Pradeep K Haldiya <pradeep.haldiya@gmail.com>"
   ],
@@ -15,6 +15,7 @@
     "ts",
     "typescript",
     "types",
+    "typing",
     "typings",
     "body",
     "query",
@@ -37,7 +38,7 @@
   "homepage": "https://github.com/phaldiya/advanced-date-parser#readme",
   "license": "MIT",
   "dependencies": {
-    "moment": "^2.19.1"
+    "moment": "^2.19.4"
   },
   "devDependencies": {
     "chai": "^4.1.2",

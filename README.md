@@ -1,8 +1,9 @@
 advanced-date-parser
 =====================
 
-> an date parser middleware, to parse date into Javascript Date Objects
-> Also work with typescript
+* A date parser middleware, to parse date into Javascript Date Objects
+* Also work with typescript
+* Javascript utility to parse date attributes into date objects
 
 
 ## Getting started ##
