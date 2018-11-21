@@ -33,10 +33,12 @@ const model = {
     for (let key in object) {
       // avoid circular reference infinite loop & skip inherited properties
       if (object === object[key] || !Object.prototype.hasOwnProperty.call(object, key) || typeof object[key] !== 'object') continue;
-      model.parse(object[key]);
+      model.parse(object[key], strict);
     }
 
     model._findAndReplace(object, strict);
+
+    return object;
   },
 
   _findAndReplace: (object, strict) => {
@@ -46,7 +48,7 @@ const model = {
     Object.keys(object).forEach((key) => {
       if (typeof object[key] !== 'boolean' && isNaN(object[key]) && (!strict || !isNaN(key) || dateRegex.test(key)) && moment(object[key], supportedDateFormates, true).isValid()) {
         object[key] = moment(object[key], supportedDateFormates, true).toDate();
-      } else if (!isNaN(object[key]) && dateRegex.test(key)) {
+      } else if (!isNaN(object[key]) && (!strict || dateRegex.test(key))) {
         let unixDateRegex = new RegExp("^\\d{10}(\\.\\d{0,3})?$");
         let millisecondsRegex = new RegExp("^\\d{13}$");
 
