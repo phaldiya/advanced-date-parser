@@ -620,11 +620,6 @@ acorn@^8.2.4:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.4.1.tgz#56c36251fc7cabc7096adc18f05afe814321a28c"
   integrity sha512-asabaBSkEKosYKMITunzX177CXxQ4Q8BSSzMTKD+FefUhipQC70gfW5SiUDhYQ3vk8G+81HqQk7Fv9OXwwn9KA==
 
-advanced-date-parser@0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/advanced-date-parser/-/advanced-date-parser-0.1.2.tgz#b8ddf3be27398376c9a32526be7814792cbe0b39"
-  integrity sha512-ZcV+MqwcrWS3r88Se5cONZpkD/JvaqpD3B07WM0YVY8+MvCGJNWipdyq0lRH/5iDp4dgGdB3J/W6QO2hPKWK/w==
-
 agent-base@6:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-6.0.2.tgz#49fff58577cfee3f37176feab4c22e00f86d7f77"
