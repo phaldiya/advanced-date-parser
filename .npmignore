@@ -1,4 +1,40 @@
+# Specifies intentionally untracked files to ignore when using Git
+# http://git-scm.com/docs/gitignore
+
+# vim
+*.swp
+
+# Intellij
+.idea/
+*.iml
+*.iws
+*.pyc
+
+# vscode
+.vscode
+
+# Mac
+.DS_Store
+
+# Grunt & Bower
+bower_components/
+node_modules/
+package-lock.json
+
+# Node
+npm-debug.log
+
+#Test results
 test/
+
+# API Docs
+public/docs
+
+.history/
+yarn-error.log
+
+
 .editorconfig
 .gitignore
 yarn.lock
+.zip
