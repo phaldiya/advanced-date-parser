@@ -29,3 +29,6 @@ test/reporter
 
 # API Docs
 public/docs
+
+.history
+yarn-error.log

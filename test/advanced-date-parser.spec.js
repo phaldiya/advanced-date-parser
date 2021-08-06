@@ -1,5 +1,3 @@
-const { expect } = require('chai');
-const moment = require('moment');
 const dateParser = require('../advanced-date-parser');
 
 describe('Date Parser', () => {
@@ -13,12 +11,12 @@ describe('Date Parser', () => {
 
     dateParser.parse(req.query);
 
-    expect(req.query).to.deep.equal({
+    expect(req.query).toStrictEqual({
       term: 'express',
-      startDate: moment('2017-10-01').toDate(),
+      startDate: new Date('2017-10-01'),
     });
 
-    expect(req.query.startDate instanceof Date).to.equal(true);
+    expect(req.query.startDate instanceof Date).toBeTruthy()
   });
 
   it('should parse the object with date params in not strict mode', () => {
@@ -32,14 +30,14 @@ describe('Date Parser', () => {
 
     dateParser.parse(req.query, false);
 
-    expect(req.query).to.deep.equal({
+    expect(req.query).toStrictEqual({
       term: 'express',
-      from: moment('2017-10-01').toDate(),
-      to: moment('2017-10-31').toDate(),
+      from: new Date('2017-10-01'),
+      to: new Date('2017-10-31'),
     });
 
-    expect(req.query.from instanceof Date).to.equal(true);
-    expect(req.query.to instanceof Date).to.equal(true);
+    expect(req.query.from instanceof Date).toBeTruthy()
+    expect(req.query.to instanceof Date).toBeTruthy()
   });
 
   it('should parse the deep object with date params', () => {
@@ -54,14 +52,14 @@ describe('Date Parser', () => {
 
     dateParser.parse(req.query);
 
-    expect(req.query).to.deep.equal({
+    expect(req.query).toStrictEqual({
       term: 'express',
       metaData: {
-        startDate: moment('2017-10-01').toDate(),
+        startDate: new Date('2017-10-01 00:00:00'),
       },
     });
 
-    expect(req.query.metaData.startDate instanceof Date).to.equal(true);
+    expect(req.query.metaData.startDate instanceof Date).toBeTruthy()
   });
 
   it('should parse the object with Array of dates', () => {
@@ -74,16 +72,16 @@ describe('Date Parser', () => {
 
     dateParser.parse(req.query);
 
-    expect(req.query).to.deep.equal({
+    expect(req.query).toStrictEqual({
       term: 'express',
       dates: [
-        moment('Friday, June 24, 2016 10:42 AM', 'LLLL', true).toDate(),
-        moment('2017-08-11T00:00:00.000Z').toDate(),
+        new Date('Friday, June 24, 2016 10:42 AM'),
+        new Date('2017-08-11T00:00:00.000Z'),
       ],
     });
 
-    expect(req.query.dates[0] instanceof Date).to.equal(true);
-    expect(req.query.dates[1] instanceof Date).to.equal(true);
+    expect(req.query.dates[0] instanceof Date).toBeTruthy()
+    expect(req.query.dates[1] instanceof Date).toBeTruthy()
   });
 
   it('should parse the milliseconds style date', () => {
@@ -97,13 +95,13 @@ describe('Date Parser', () => {
 
     dateParser.parse(req.query);
 
-    expect(req.query).to.deep.equal({
+    expect(req.query).toStrictEqual({
       term: 'express',
-      startDate: moment('2017-08-03T17:37:56.406Z').toDate(),
-      endDate: moment('2020-10-07T06:59:59.999Z').toDate(),
+      startDate: new Date('2017-08-03T17:37:56.406Z'),
+      endDate: new Date('2020-10-07T06:59:59.999Z'),
     });
 
-    expect(req.query.startDate instanceof Date).to.equal(true);
+    expect(req.query.startDate instanceof Date).toBeTruthy()
   });
 
   it('should parse the unix style date', () => {
@@ -116,12 +114,12 @@ describe('Date Parser', () => {
 
     dateParser.parse(req.query);
 
-    expect(req.query).to.deep.equal({
+    expect(req.query).toStrictEqual({
       term: 'express',
-      startDate: moment('2017-08-03T17:37:56.406Z').toDate(),
+      startDate: new Date('2017-08-03T17:37:56.406Z'),
     });
 
-    expect(req.query.startDate instanceof Date).to.equal(true);
+    expect(req.query.startDate instanceof Date).toBeTruthy()
   });
 
   it("should skip to parse the attribute if it doesn't contains text date", () => {
@@ -134,7 +132,7 @@ describe('Date Parser', () => {
 
     dateParser.parse(req.query);
 
-    expect(req.query.start instanceof Date).to.equal(false);
-    expect(req.query.start).to.equal(1501781876.406);
+    expect(req.query.start instanceof Date).toBeFalsy()
+    expect(req.query.start).toEqual(1501781876.406);
   });
 });

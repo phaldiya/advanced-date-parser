@@ -1,36 +1,12 @@
-const moment = require('moment');
+const { isValid } = require('date-fns');
 
-const supportedDateFormates = [
-  'YYYY-MM-DD',
-  'MM/DD/YYYY',
-  'MM-DD-YYYY',
-  'DD/MM/YYYY',
-  'YYYY-MM-DD H:mm',
-  'YYYY-MM-DDTH:mm:ss.sssZ',
-  'YYYY-MM-DDTH:mm:ssZ',
-  'YYYY-MM-DD h:mm:ss a',
-  moment.ISO_8601,
-  'X',
-  'x',
-  'MMM Do, YYYY',
-  'MMM Do YYYY',
-  'MMMM Do, YYYY',
-  'MMMM Do YYYY',
-  'dddd, MMMM DD, YYYY h:mm a',
-  'ddd, MMMM DD, YYYY h:mm a',
-  'L',
-  'LL',
-  'LLL',
-  'LLLL',
-];
-
-const strictDateRegex = function() {
+const strictDateRegex = function () {
   return new RegExp('date', 'ig');
 };
-const unixDateRegex = function() {
+const unixDateRegex = function () {
   return new RegExp('^\\d{10}(\\.\\d{0,3})?$');
 };
-const millisecondsRegex = function() {
+const millisecondsRegex = function () {
   return new RegExp('^\\d{13}$');
 };
 
@@ -84,14 +60,14 @@ const model = {
         typeof object[key] !== 'boolean' &&
         isNaN(object[key]) &&
         (!strict || !isNaN(key) || strictDateRegex().test(key)) &&
-        moment(object[key], supportedDateFormates, true).isValid()
+        isValid(new Date(object[key]))
       ) {
-        object[key] = moment(object[key], supportedDateFormates, true).toDate();
+        object[key] = new Date(object[key]);
       } else if (!isNaN(object[key]) && (!strict || strictDateRegex().test(key))) {
         if (unixDateRegex().test(object[key])) {
-          object[key] = moment.unix(object[key]).toDate();
+          object[key] = new Date(Number.parseFloat(object[key], 10) * 1000);
         } else if (millisecondsRegex().test(object[key])) {
-          object[key] = moment(object[key], 'x').toDate();
+          object[key] = new Date(Number.parseInt(object[key], 10));
         }
       }
     });
