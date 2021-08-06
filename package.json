@@ -3,7 +3,7 @@
   "description": "A date parser middleware, to parse date into Javascript Date Objects",
   "main": "./advanced-date-parser.js",
   "types": "./advanced-date-parser.d.ts",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "authors": [
     "Pradeep K Haldiya <pradeep.haldiya@gmail.com>"
   ],
