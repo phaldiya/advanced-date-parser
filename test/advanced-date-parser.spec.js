@@ -135,4 +135,36 @@ describe('Date Parser', () => {
     expect(req.query.start instanceof Date).toBeFalsy()
     expect(req.query.start).toEqual(1501781876.406);
   });
+
+  it("should parse the attribute if strict flag is 'false'", () => {
+    const req = {
+      query: {
+        term: 'express',
+        start: 1501781876.406,
+      },
+    };
+
+    dateParser.parse(req.query, false);
+
+    expect(req.query.start instanceof Date).toBeTruthy()
+    expect(req.query.start).toEqual(new Date('2017-08-03T17:37:56.406Z'));
+  });
+
+  it('should parse the invalid date', () => {
+    const req = {
+      query: {
+        term: 'express',
+        startDate: 'today',
+      },
+    };
+
+    dateParser.parse(req.query);
+
+    expect(req.query).toStrictEqual({
+      term: 'express',
+      startDate: 'today',
+    });
+
+    expect(req.query.startDate instanceof Date).toBeFalsy();
+  });
 });

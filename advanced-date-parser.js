@@ -1,5 +1,3 @@
-const { isValid } = require('date-fns');
-
 const strictDateRegex = function () {
   return new RegExp('date', 'ig');
 };
@@ -8,6 +6,12 @@ const unixDateRegex = function () {
 };
 const millisecondsRegex = function () {
   return new RegExp('^\\d{13}$');
+};
+
+const isValid = function (date) {
+  // If the date object is invalid it will return 'NaN' on getTime() and NaN is never equal to itself.
+  const dateObj = new Date(date);
+  return dateObj && dateObj.getTime() === dateObj.getTime();
 };
 
 const model = {
@@ -36,16 +40,11 @@ const model = {
   parse: (object, strict) => {
     if (typeof object !== 'object' || object === null) return;
 
-    for (const key in object) {
-      // avoid circular reference infinite loop & skip inherited properties
-      if (
-        object === object[key] ||
-        !Object.prototype.hasOwnProperty.call(object, key) ||
-        typeof object[key] !== 'object'
-      )
-        continue;
-      model.parse(object[key], strict);
-    }
+    Object.keys(object).filter(key => !(object === object[key] ||
+      !Object.prototype.hasOwnProperty.call(object, key) ||
+      typeof object[key] !== 'object')).forEach(key => {
+        object[key] = model.parse(object[key], strict);
+      });
 
     model._findAndReplace(object, strict);
 
@@ -57,7 +56,6 @@ const model = {
 
     Object.keys(object).forEach((key) => {
       if (
-        typeof object[key] !== 'boolean' &&
         isNaN(object[key]) &&
         (!strict || !isNaN(key) || strictDateRegex().test(key)) &&
         isValid(new Date(object[key]))

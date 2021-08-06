@@ -9,8 +9,9 @@
   ],
   "keywords": [
     "express",
-    "date-fns",
+    "expressjs",
     "date",
+    "datetime",
     "middleware",
     "ts",
     "typescript",
@@ -37,9 +38,7 @@
   },
   "homepage": "https://github.com/phaldiya/advanced-date-parser#readme",
   "license": "MIT",
-  "dependencies": {
-    "date-fns": "2.23.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "jest": "27.0.6"
   },
