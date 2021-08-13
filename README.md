@@ -1,8 +1,8 @@
 advanced-date-parser
 =====================
-
-* A date parser middleware, to parse date into Javascript Date Objects
+* NO dependency on other packages
 * Also work with typescript
+* A date parser middleware, to parse date into Javascript Date Objects
 * Javascript utility to parse date attributes into date objects
 
 
@@ -52,7 +52,7 @@ app.use(dateParser.dateParser());
 
 * Also can be use to parse any date attributes into the Object
 ```javascript
-dateParser.parse(<Your_Object>);
+dateParser.parse(<OBJECT|STRING|NUMBER>);
 ```
 
 **NOTE**: Just set _**strict**_ mode to _**false**_, if you want to parse all date values
@@ -61,7 +61,7 @@ dateParser.parse(<Your_Object>);
 app.use(dateParser.queryDateParser(), false);
 app.use(dateParser.bodyDateParser(), false);
 app.use(dateParser.dateParser(), false);
-dateParser.parse(<Your_Object>, false);
+dateParser.parse(<OBJECT|STRING|NUMBER>, false);
 ```
 
 ## Contributing

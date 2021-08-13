@@ -38,7 +38,9 @@ const model = {
   },
 
   parse: (object, strict) => {
-    if (typeof object !== 'object' || object === null) return;
+    if (typeof object !== 'object' || object === null) {
+      return model._parseValue(object);
+    }
 
     Object.keys(object).filter(key => !(object === object[key] ||
       !Object.prototype.hasOwnProperty.call(object, key) ||
@@ -69,6 +71,25 @@ const model = {
         }
       }
     });
+
+    return object;
+  },
+
+  _parseValue: (value) => {
+    if (
+      isNaN(value) &&
+      isValid(new Date(value))
+    ) {
+      return new Date(value);
+    } else if (!isNaN(value)) {
+      if (unixDateRegex().test(value)) {
+        return new Date(Number.parseFloat(value, 10) * 1000);
+      } else if (millisecondsRegex().test(value)) {
+        return new Date(Number.parseInt(value, 10));
+      }
+    }
+
+    return value;
   },
 };
 

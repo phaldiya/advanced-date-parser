@@ -167,4 +167,11 @@ describe('Date Parser', () => {
 
     expect(req.query.startDate instanceof Date).toBeFalsy();
   });
+
+  it("should parse the date string", () => {
+    const date = '2020-01-01';
+
+    expect(dateParser.parse(date) instanceof Date).toBeTruthy();
+    expect(dateParser.parse(date)).toEqual(new Date('2020-01-01'));
+  });
 });
