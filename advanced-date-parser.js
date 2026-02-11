@@ -1,17 +1,9 @@
-const strictDateRegex = function () {
-  return new RegExp('date', 'ig');
-};
-const unixDateRegex = function () {
-  return new RegExp('^\\d{10}(\\.\\d{0,3})?$');
-};
-const millisecondsRegex = function () {
-  return new RegExp('^\\d{13}$');
-};
+const STRICT_DATE_REGEX = /date/i;
+const UNIX_DATE_REGEX = /^\d{10}(\.\d{0,3})?$/;
+const MILLISECONDS_REGEX = /^\d{13}$/;
 
-const isValid = function (date) {
-  // If the date object is invalid it will return 'NaN' on getTime() and NaN is never equal to itself.
-  const dateObj = new Date(date);
-  return dateObj && dateObj.getTime() === dateObj.getTime();
+const isValid = function (dateObj) {
+  return dateObj.getTime() === dateObj.getTime();
 };
 
 const model = {
@@ -42,9 +34,9 @@ const model = {
       return model._parseValue(object);
     }
 
-    Object.keys(object).filter(key => !(object === object[key] ||
-      !Object.prototype.hasOwnProperty.call(object, key) ||
-      typeof object[key] !== 'object')).forEach(key => {
+    Object.keys(object)
+      .filter(key => object[key] !== object && typeof object[key] === 'object')
+      .forEach(key => {
         object[key] = model.parse(object[key], strict);
       });
 
@@ -59,14 +51,16 @@ const model = {
     Object.keys(object).forEach((key) => {
       if (
         isNaN(object[key]) &&
-        (!strict || !isNaN(key) || strictDateRegex().test(key)) &&
-        isValid(new Date(object[key]))
+        (!strict || !isNaN(key) || STRICT_DATE_REGEX.test(key))
       ) {
-        object[key] = new Date(object[key]);
-      } else if (!isNaN(object[key]) && (!strict || strictDateRegex().test(key))) {
-        if (unixDateRegex().test(object[key])) {
-          object[key] = new Date(Number.parseFloat(object[key], 10) * 1000);
-        } else if (millisecondsRegex().test(object[key])) {
+        const dateObj = new Date(object[key]);
+        if (isValid(dateObj)) {
+          object[key] = dateObj;
+        }
+      } else if (!isNaN(object[key]) && (!strict || STRICT_DATE_REGEX.test(key))) {
+        if (UNIX_DATE_REGEX.test(object[key])) {
+          object[key] = new Date(Number.parseFloat(object[key]) * 1000);
+        } else if (MILLISECONDS_REGEX.test(object[key])) {
           object[key] = new Date(Number.parseInt(object[key], 10));
         }
       }
@@ -76,15 +70,15 @@ const model = {
   },
 
   _parseValue: (value) => {
-    if (
-      isNaN(value) &&
-      isValid(new Date(value))
-    ) {
-      return new Date(value);
-    } else if (!isNaN(value)) {
-      if (unixDateRegex().test(value)) {
-        return new Date(Number.parseFloat(value, 10) * 1000);
-      } else if (millisecondsRegex().test(value)) {
+    if (isNaN(value)) {
+      const dateObj = new Date(value);
+      if (isValid(dateObj)) {
+        return dateObj;
+      }
+    } else {
+      if (UNIX_DATE_REGEX.test(value)) {
+        return new Date(Number.parseFloat(value) * 1000);
+      } else if (MILLISECONDS_REGEX.test(value)) {
         return new Date(Number.parseInt(value, 10));
       }
     }

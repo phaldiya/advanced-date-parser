@@ -174,4 +174,110 @@ describe('Date Parser', () => {
     expect(dateParser.parse(date) instanceof Date).toBeTruthy();
     expect(dateParser.parse(date)).toEqual(new Date('2020-01-01'));
   });
+
+  describe('middleware', () => {
+    it('dateParser should parse both body and query', () => {
+      const req = {
+        body: { startDate: '2020-01-01' },
+        query: { endDate: '2020-12-31' },
+      };
+      const next = jest.fn();
+
+      dateParser.dateParser()(req, {}, next);
+
+      expect(req.body.startDate).toEqual(new Date('2020-01-01'));
+      expect(req.query.endDate).toEqual(new Date('2020-12-31'));
+      expect(next).toHaveBeenCalledTimes(1);
+    });
+
+    it('bodyDateParser should parse only body', () => {
+      const req = {
+        body: { startDate: '2020-01-01' },
+        query: { endDate: '2020-12-31' },
+      };
+      const next = jest.fn();
+
+      dateParser.bodyDateParser()(req, {}, next);
+
+      expect(req.body.startDate).toEqual(new Date('2020-01-01'));
+      expect(req.query.endDate).toBe('2020-12-31');
+      expect(next).toHaveBeenCalledTimes(1);
+    });
+
+    it('queryDateParser should parse only query', () => {
+      const req = {
+        body: { startDate: '2020-01-01' },
+        query: { endDate: '2020-12-31' },
+      };
+      const next = jest.fn();
+
+      dateParser.queryDateParser()(req, {}, next);
+
+      expect(req.body.startDate).toBe('2020-01-01');
+      expect(req.query.endDate).toEqual(new Date('2020-12-31'));
+      expect(next).toHaveBeenCalledTimes(1);
+    });
+
+    it('dateParser should respect strict flag', () => {
+      const req = {
+        body: { from: '2020-01-01' },
+        query: { to: '2020-12-31' },
+      };
+      const next = jest.fn();
+
+      dateParser.dateParser(false)(req, {}, next);
+
+      expect(req.body.from).toEqual(new Date('2020-01-01'));
+      expect(req.query.to).toEqual(new Date('2020-12-31'));
+    });
+  });
+
+  describe('edge cases', () => {
+    it('should return null as-is', () => {
+      expect(dateParser.parse(null)).toBeNull();
+    });
+
+    it('should return undefined as-is', () => {
+      expect(dateParser.parse(undefined)).toBeUndefined();
+    });
+
+    it('should return empty object as-is', () => {
+      const obj = {};
+      expect(dateParser.parse(obj)).toStrictEqual({});
+    });
+
+    it('should not convert boolean values', () => {
+      const obj = { startDate: true, endDate: false };
+      dateParser.parse(obj);
+
+      expect(obj.startDate).toBe(true);
+      expect(obj.endDate).toBe(false);
+    });
+
+    it('should not convert empty string values', () => {
+      const obj = { startDate: '' };
+      dateParser.parse(obj);
+
+      expect(obj.startDate).toBe('');
+    });
+
+    it('should handle already-Date object values', () => {
+      const date = new Date('2020-06-15');
+      const obj = { startDate: date };
+      dateParser.parse(obj);
+
+      expect(obj.startDate instanceof Date).toBeTruthy();
+      expect(obj.startDate).toEqual(new Date('2020-06-15'));
+    });
+
+    it('should handle circular references without infinite loop', () => {
+      const obj = { startDate: '2020-01-01' };
+      obj.self = obj;
+
+      dateParser.parse(obj);
+
+      expect(obj.startDate).toEqual(new Date('2020-01-01'));
+      expect(obj.self).toBe(obj);
+    });
+  });
 });
