@@ -55,6 +55,10 @@
   },
   "homepage": "https://github.com/phaldiya/advanced-date-parser#readme",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "dependencies": {},
   "devDependencies": {
     "@semantic-release/changelog": "^6.0.3",
