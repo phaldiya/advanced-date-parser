@@ -3,7 +3,7 @@
   "description": "A date parser middleware, to parse date into Javascript Date Objects",
   "main": "./advanced-date-parser.js",
   "types": "./advanced-date-parser.d.ts",
-  "version": "0.1.5",
+  "version": "0.0.0-development",
   "authors": [
     "Pradeep K Haldiya <pradeep.haldiya@gmail.com>"
   ],
@@ -40,7 +40,10 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
-    "jest": "27.0.6"
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "jest": "27.0.6",
+    "semantic-release": "^24.0.0"
   },
   "jest": {
     "coveragePathIgnorePatterns": [

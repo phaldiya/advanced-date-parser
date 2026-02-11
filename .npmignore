@@ -36,5 +36,7 @@ yarn-error.log
 
 .editorconfig
 .gitignore
+.github/
+.releaserc.json
 yarn.lock
 .zip
