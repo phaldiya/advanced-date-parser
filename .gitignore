@@ -19,7 +19,6 @@
 # Grunt & Bower
 bower_components/
 node_modules/
-package-lock.json
 
 # Node
 npm-debug.log
