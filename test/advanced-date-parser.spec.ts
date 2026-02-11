@@ -1,4 +1,5 @@
-const dateParser = require('../advanced-date-parser');
+import { describe, it, expect, vi } from 'vitest';
+import dateParser from '../src/index';
 
 describe('Date Parser', () => {
   it('should parse the object with date params', () => {
@@ -16,7 +17,7 @@ describe('Date Parser', () => {
       startDate: new Date('2017-10-01'),
     });
 
-    expect(req.query.startDate instanceof Date).toBeTruthy()
+    expect(req.query.startDate instanceof Date).toBeTruthy();
   });
 
   it('should parse the object with date params in not strict mode', () => {
@@ -36,8 +37,8 @@ describe('Date Parser', () => {
       to: new Date('2017-10-31'),
     });
 
-    expect(req.query.from instanceof Date).toBeTruthy()
-    expect(req.query.to instanceof Date).toBeTruthy()
+    expect(req.query.from instanceof Date).toBeTruthy();
+    expect(req.query.to instanceof Date).toBeTruthy();
   });
 
   it('should parse the deep object with date params', () => {
@@ -59,7 +60,7 @@ describe('Date Parser', () => {
       },
     });
 
-    expect(req.query.metaData.startDate instanceof Date).toBeTruthy()
+    expect((req.query.metaData as Record<string, unknown>).startDate instanceof Date).toBeTruthy();
   });
 
   it('should parse the object with Array of dates', () => {
@@ -80,8 +81,8 @@ describe('Date Parser', () => {
       ],
     });
 
-    expect(req.query.dates[0] instanceof Date).toBeTruthy()
-    expect(req.query.dates[1] instanceof Date).toBeTruthy()
+    expect((req.query.dates as unknown[])[0] instanceof Date).toBeTruthy();
+    expect((req.query.dates as unknown[])[1] instanceof Date).toBeTruthy();
   });
 
   it('should parse the milliseconds style date', () => {
@@ -101,7 +102,7 @@ describe('Date Parser', () => {
       endDate: new Date('2020-10-07T06:59:59.999Z'),
     });
 
-    expect(req.query.startDate instanceof Date).toBeTruthy()
+    expect(req.query.startDate instanceof Date).toBeTruthy();
   });
 
   it('should parse the unix style date', () => {
@@ -119,7 +120,7 @@ describe('Date Parser', () => {
       startDate: new Date('2017-08-03T17:37:56.406Z'),
     });
 
-    expect(req.query.startDate instanceof Date).toBeTruthy()
+    expect(req.query.startDate instanceof Date).toBeTruthy();
   });
 
   it("should skip to parse the attribute if it doesn't contains text date", () => {
@@ -132,7 +133,7 @@ describe('Date Parser', () => {
 
     dateParser.parse(req.query);
 
-    expect(req.query.start instanceof Date).toBeFalsy()
+    expect(req.query.start instanceof Date).toBeFalsy();
     expect(req.query.start).toEqual(1501781876.406);
   });
 
@@ -146,7 +147,7 @@ describe('Date Parser', () => {
 
     dateParser.parse(req.query, false);
 
-    expect(req.query.start instanceof Date).toBeTruthy()
+    expect(req.query.start instanceof Date).toBeTruthy();
     expect(req.query.start).toEqual(new Date('2017-08-03T17:37:56.406Z'));
   });
 
@@ -168,7 +169,7 @@ describe('Date Parser', () => {
     expect(req.query.startDate instanceof Date).toBeFalsy();
   });
 
-  it("should parse the date string", () => {
+  it('should parse the date string', () => {
     const date = '2020-01-01';
 
     expect(dateParser.parse(date) instanceof Date).toBeTruthy();
@@ -181,9 +182,9 @@ describe('Date Parser', () => {
         body: { startDate: '2020-01-01' },
         query: { endDate: '2020-12-31' },
       };
-      const next = jest.fn();
+      const next = vi.fn();
 
-      dateParser.dateParser()(req, {}, next);
+      dateParser.dateParser()(req as any, {} as any, next);
 
       expect(req.body.startDate).toEqual(new Date('2020-01-01'));
       expect(req.query.endDate).toEqual(new Date('2020-12-31'));
@@ -195,9 +196,9 @@ describe('Date Parser', () => {
         body: { startDate: '2020-01-01' },
         query: { endDate: '2020-12-31' },
       };
-      const next = jest.fn();
+      const next = vi.fn();
 
-      dateParser.bodyDateParser()(req, {}, next);
+      dateParser.bodyDateParser()(req as any, {} as any, next);
 
       expect(req.body.startDate).toEqual(new Date('2020-01-01'));
       expect(req.query.endDate).toBe('2020-12-31');
@@ -209,9 +210,9 @@ describe('Date Parser', () => {
         body: { startDate: '2020-01-01' },
         query: { endDate: '2020-12-31' },
       };
-      const next = jest.fn();
+      const next = vi.fn();
 
-      dateParser.queryDateParser()(req, {}, next);
+      dateParser.queryDateParser()(req as any, {} as any, next);
 
       expect(req.body.startDate).toBe('2020-01-01');
       expect(req.query.endDate).toEqual(new Date('2020-12-31'));
@@ -223,9 +224,9 @@ describe('Date Parser', () => {
         body: { from: '2020-01-01' },
         query: { to: '2020-12-31' },
       };
-      const next = jest.fn();
+      const next = vi.fn();
 
-      dateParser.dateParser(false)(req, {}, next);
+      dateParser.dateParser(false)(req as any, {} as any, next);
 
       expect(req.body.from).toEqual(new Date('2020-01-01'));
       expect(req.query.to).toEqual(new Date('2020-12-31'));
@@ -247,7 +248,7 @@ describe('Date Parser', () => {
     });
 
     it('should not convert boolean values', () => {
-      const obj = { startDate: true, endDate: false };
+      const obj: Record<string, unknown> = { startDate: true, endDate: false };
       dateParser.parse(obj);
 
       expect(obj.startDate).toBe(true);
@@ -255,7 +256,7 @@ describe('Date Parser', () => {
     });
 
     it('should not convert empty string values', () => {
-      const obj = { startDate: '' };
+      const obj: Record<string, unknown> = { startDate: '' };
       dateParser.parse(obj);
 
       expect(obj.startDate).toBe('');
@@ -263,7 +264,7 @@ describe('Date Parser', () => {
 
     it('should handle already-Date object values', () => {
       const date = new Date('2020-06-15');
-      const obj = { startDate: date };
+      const obj: Record<string, unknown> = { startDate: date };
       dateParser.parse(obj);
 
       expect(obj.startDate instanceof Date).toBeTruthy();
@@ -271,7 +272,7 @@ describe('Date Parser', () => {
     });
 
     it('should handle circular references without infinite loop', () => {
-      const obj = { startDate: '2020-01-01' };
+      const obj: Record<string, unknown> = { startDate: '2020-01-01' };
       obj.self = obj;
 
       dateParser.parse(obj);
