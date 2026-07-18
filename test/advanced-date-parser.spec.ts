@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import dateParser from '../src/index';
 
 describe('Date Parser', () => {
@@ -75,10 +75,7 @@ describe('Date Parser', () => {
 
     expect(req.query).toStrictEqual({
       term: 'express',
-      dates: [
-        new Date('Friday, June 24, 2016 10:42 AM'),
-        new Date('2017-08-11T00:00:00.000Z'),
-      ],
+      dates: [new Date('Friday, June 24, 2016 10:42 AM'), new Date('2017-08-11T00:00:00.000Z')],
     });
 
     expect((req.query.dates as unknown[])[0] instanceof Date).toBeTruthy();
@@ -279,6 +276,18 @@ describe('Date Parser', () => {
 
       expect(obj.startDate).toEqual(new Date('2020-01-01'));
       expect(obj.self).toBe(obj);
+    });
+
+    it('should handle indirect circular references without infinite loop', () => {
+      const a: Record<string, unknown> = { startDate: '2020-01-01' };
+      const b: Record<string, unknown> = { parent: a, endDate: '2020-12-31' };
+      a.child = b;
+
+      dateParser.parse(a);
+
+      expect(a.startDate).toEqual(new Date('2020-01-01'));
+      expect((a.child as Record<string, unknown>).endDate).toEqual(new Date('2020-12-31'));
+      expect((a.child as Record<string, unknown>).parent).toBe(a);
     });
   });
 });
