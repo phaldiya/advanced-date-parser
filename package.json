@@ -1,7 +1,7 @@
 {
   "name": "advanced-date-parser",
   "description": "A date parser middleware, to parse date into Javascript Date Objects",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",

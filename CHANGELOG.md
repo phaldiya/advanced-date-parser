@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/phaldiya/advanced-date-parser/compare/v1.0.0...v1.0.1) (2026-07-18)
+
+
+### Bug Fixes
+
+* harden parse() against circular references and tighten number detection ([8e0ff01](https://github.com/phaldiya/advanced-date-parser/commit/8e0ff0173149a3d69602f61ba575a39407cb0db9))
+
 # 1.0.0 (2026-02-11)
 
 
